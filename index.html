@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allô Artisan - Bamako</title>
+    <title>BAARA + - Annuaire des Artisans à Bamako</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Bibliothèque OCR pour lire les captures d'écran -->
+    <!-- Bibliothèque OCR pour la vérification automatique des reçus -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <!-- Firebase SDK pour la synchronisation en temps réel -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -24,7 +27,7 @@
                     <i class="fa-solid fa-hammer"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-base tracking-wide">Allô Artisan</h1>
+                    <h1 class="font-bold text-base tracking-wide">BAARA <span class="text-amber-300">+</span></h1>
                     <p class="text-[10px] text-orange-100">Bamako • Pro & Vérifié</p>
                 </div>
             </div>
@@ -84,7 +87,7 @@
         <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-sm flex items-center justify-between">
             <div>
                 <h3 class="font-bold text-sm">Artisan à Bamako ?</h3>
-                <p class="text-xs text-slate-300">Rejoignez le répertoire et recevez des clients.</p>
+                <p class="text-xs text-slate-300">Rejoignez BAARA + et recevez des clients.</p>
             </div>
             <button onclick="openRegisterModal()" class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-3 py-2 rounded-xl transition shadow">
                 S'inscrire
@@ -112,11 +115,11 @@
         </div>
     </main>
 
-    <!-- CONTENU : AVIS ET COMMENTAIRES DE L'APPLICATION + REACTIONS EMOJI -->
+    <!-- CONTENU : AVIS ET COMMENTAIRES DE L'APPLICATION -->
     <main id="tab-reviews" class="max-w-md mx-auto p-4 space-y-4 hidden">
         <!-- Réactions Emojis -->
         <div class="bg-white p-4 rounded-2xl shadow-sm space-y-2 text-center">
-            <h3 class="font-bold text-sm text-slate-800">Que pensez-vous de l'application ?</h3>
+            <h3 class="font-bold text-sm text-slate-800">Que pensez-vous de l'application BAARA + ?</h3>
             <p class="text-xs text-slate-500">Cliquez pour réagir :</p>
             <div class="flex justify-around pt-2">
                 <button onclick="reactEmoji('👍')" class="flex flex-col items-center bg-slate-50 p-2.5 rounded-xl hover:bg-orange-50 transition w-16">
@@ -177,14 +180,14 @@
                     <option value="Soudeur">Soudeur</option>
                     <option value="Informaticien / Téléphone">Informaticien / Téléphone</option>
                 </select>
-                <input type="text" id="regQuartier" placeholder="Quartier (ex: Torokorobougou, Bamako Coura...)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <input type="text" id="regQuartier" placeholder="Quartier (ex: Torokorobougou, Badalabougou...)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
                 <input type="text" id="regPhone" placeholder="Numéro WhatsApp/Téléphone (+223...)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
                 <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-orange-500/30">Valider l'inscription</button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL : TARIFS, BOOST & ACTIVATION AUTOMATIQUE PAR OCR & ID TRANSACTION -->
+    <!-- MODAL : TARIFS, BOOST & ACTIVATION AUTOMATIQUE -->
     <div id="boostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center">
@@ -270,7 +273,7 @@
     <div id="adminPanelModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-lg rounded-3xl p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-lg text-slate-900"><i class="fa-solid fa-shield-halved text-orange-600 mr-2"></i>Administration Allô Artisan</h3>
+                <h3 class="font-bold text-lg text-slate-900"><i class="fa-solid fa-shield-halved text-orange-600 mr-2"></i>Administration BAARA +</h3>
                 <button onclick="closeAdminPanel()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
@@ -297,7 +300,7 @@
         </div>
     </div>
 
-    <!-- CONTACT ADMIN FLOTTANT (WhatsApp, Appel, Message) -->
+    <!-- CONTACT ADMIN FLOTTANT -->
     <div class="fixed bottom-16 right-4 z-30 flex flex-col space-y-2">
         <button onclick="openContactAdmin()" class="bg-emerald-600 hover:bg-emerald-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-xl transition transform hover:scale-105">
             <i class="fa-brands fa-whatsapp"></i>
@@ -308,9 +311,25 @@
     </div>
 
     <script>
+        // CONFIGURATION FIREBASE AVEC VOS VRAIES CLÉS
+        const firebaseConfig = {
+            apiKey: "AIzaSyC-8nbfa6drXIYJBiAjPY4DCZSi0xKo5Mo",
+            authDomain: "baaraplus-7fbbd.firebaseapp.com",
+            databaseURL: "https://baaraplus-7fbbd-default-rtdb.firebaseio.com",
+            projectId: "baaraplus-7fbbd",
+            storageBucket: "baaraplus-7fbbd.appspot.com",
+            messagingSenderId: "130595696032",
+            appId: "1:130595696032:web:565d7926f2211f9edf88c5",
+            measurementId: "G-GZTI64K67H"
+        };
+
+        // Initialisation de Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
         const SECRET_ADMIN_CODE = "0907aag1993";
 
-        let categories = JSON.parse(localStorage.getItem('allo_categories')) || [
+        let categories = [
             { name: "Plombier", icon: "fa-faucet-dripping", img: "https://images.unsplash.com/photo-1542013936693-893e3d6e530b?w=300" },
             { name: "Électricien", icon: "fa-bolt", img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300" },
             { name: "Mécanicien", icon: "fa-car", img: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=300" },
@@ -323,20 +342,43 @@
             { name: "Informaticien / Téléphone", icon: "fa-laptop", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300" }
         ];
 
-        let artisans = JSON.parse(localStorage.getItem('allo_artisans')) || [
-            { id: 1, name: "Moussa Traoré", job: "Plombier", quartier: "Badalabougou", phone: "+22376123456", rating: "4.9", boosted: true, boostExpiry: getFutureDate(30), img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150", reviews: [] },
-            { id: 2, name: "Oumar Coulibaly", job: "Électricien", quartier: "Kalaban Coro", phone: "+22379876543", rating: "4.8", boosted: true, boostExpiry: getFutureDate(30), img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150", reviews: [] },
-            { id: 3, name: "Sekou Diallo", job: "Mécanicien", quartier: "ACI 2000", phone: "+22366554433", rating: "4.7", boosted: false, boostExpiry: null, img: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150", reviews: [] },
-            { id: 4, name: "Fatoumata Sidibé", job: "Couturière", quartier: "Hamdallaye", phone: "+22375112233", rating: "5.0", boosted: false, boostExpiry: null, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150", reviews: [] }
-        ];
+        let artisans = [];
+        let usedTxIds = [];
+        let appReviews = [];
+        let emojiCounts = { "👍": 18, "❤️": 25, "🔥": 12, "👏": 14 };
 
-        // Liste des ID de transaction déjà utilisés pour empêcher les doublons
-        let usedTxIds = JSON.parse(localStorage.getItem('allo_used_txids')) || [];
+        // Écoute en temps réel de la base de données Firebase
+        db.ref('baara_data').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                artisans = data.artisans || [];
+                usedTxIds = data.usedTxIds || [];
+                appReviews = data.appReviews || [];
+                emojiCounts = data.emojiCounts || emojiCounts;
+            } else {
+                // Données initiales si vide
+                artisans = [
+                    { id: 1, name: "Moussa Traoré", job: "Plombier", quartier: "Badalabougou", phone: "+22376123456", rating: "4.9", boosted: true, boostExpiry: getFutureDate(30), img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150", reviews: [] },
+                    { id: 2, name: "Oumar Coulibaly", job: "Électricien", quartier: "Kalaban Coro", phone: "+22379876543", rating: "4.8", boosted: true, boostExpiry: getFutureDate(30), img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150", reviews: [] }
+                ];
+                saveToCloud();
+            }
+            checkSubscriptions();
+            populateFilters();
+            renderCategoriesGrid();
+            renderAppReviews();
+            renderEmojis();
+            filterArtisans();
+        });
 
-        let appReviews = JSON.parse(localStorage.getItem('allo_app_reviews')) || [
-            { name: "Drissa Koné", comment: "Application super pratique pour trouver un plombier à Bamako !", date: "01/10/2026" }
-        ];
-        let emojiCounts = JSON.parse(localStorage.getItem('allo_emojis')) || { "👍": 14, "❤️️": 22, "🔥": 9, "👏": 11 };
+        function saveToCloud() {
+            db.ref('baara_data').set({
+                artisans: artisans,
+                usedTxIds: usedTxIds,
+                appReviews: appReviews,
+                emojiCounts: emojiCounts
+            });
+        }
 
         function getFutureDate(days) {
             const d = new Date();
@@ -354,20 +396,7 @@
                     updated = true;
                 }
             });
-            if (updated) saveAndReload();
-        }
-
-        function saveAndReload() {
-            localStorage.setItem('allo_artisans', JSON.stringify(artisans));
-            localStorage.setItem('allo_used_txids', JSON.stringify(usedTxIds));
-            localStorage.setItem('allo_app_reviews', JSON.stringify(appReviews));
-            localStorage.setItem('allo_emojis', JSON.stringify(emojiCounts));
-            localStorage.setItem('allo_categories', JSON.stringify(categories));
-            populateFilters();
-            renderCategoriesGrid();
-            renderAppReviews();
-            renderEmojis();
-            filterArtisans();
+            if (updated) saveToCloud();
         }
 
         function switchTab(tab) {
@@ -450,7 +479,7 @@
                         </div>
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <a href="https://wa.me/${artisan.phone.replace(/[^0-9]/g, '')}?text=Bonjour%20${artisan.name},%20je%20vous%20contacte%20via%20Allo%20Artisan" target="_blank" 
+                        <a href="https://wa.me/${artisan.phone.replace(/[^0-9]/g, '')}?text=Bonjour%20${artisan.name},%20je%20vous%20contacte%20via%20Baara%20+" target="_blank" 
                            class="w-10 h-10 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl flex items-center justify-center shadow-md transition">
                             <i class="fa-brands fa-whatsapp text-lg"></i>
                         </a>
@@ -493,12 +522,11 @@
                 reviews: []
             };
             artisans.unshift(newArtisan);
-            saveAndReload();
+            saveToCloud();
             closeRegisterModal();
-            alert("Inscription réussie ! Votre profil est en ligne.");
+            alert("Inscription réussie ! Votre profil est en ligne et visible partout sur BAARA +.");
         }
 
-        // Vérification de l'ID de transaction unique + OCR + Message d'encouragement
         async function verifyScreenshotAndActivate(e) {
             e.preventDefault();
             const artisanName = document.getElementById('autoName').value.trim();
@@ -507,9 +535,8 @@
             const statusDiv = document.getElementById('ocrStatus');
             const submitBtn = document.getElementById('submitBtn');
 
-            // 1. Vérifier si l'ID de transaction a déjà été utilisé
             if (usedTxIds.includes(txId)) {
-                alert("❌ Erreur de sécurité : Cet ID de transaction a déjà été utilisé pour une activation. Chaque reçu est unique !");
+                alert("❌ Erreur de sécurité : Cet ID de transaction a déjà été utilisé. Chaque reçu est unique !");
                 return;
             }
 
@@ -529,33 +556,26 @@
             submitBtn.innerText = "Vérification en cours...";
 
             try {
-                // Lecture du texte de la capture via OCR
                 const { data: { text } } = await Tesseract.recognize(
                     fileInput.files[0],
                     'fra',
                     { logger: m => console.log(m) }
                 );
 
-                console.log("Texte extrait :", text);
                 const cleanedText = text.replace(/\s+/g, '').toUpperCase();
-
                 const hasNumber = cleanedText.includes('77975101');
                 const hasAmount = cleanedText.includes('800') || cleanedText.includes('100');
 
                 if (hasNumber && hasAmount) {
-                    // Enregistrer l'ID pour bloquer les réutilisations futures
                     usedTxIds.push(txId);
-                    
-                    // Activer le boost/abonnement
                     artisan.boosted = true;
                     artisan.boostExpiry = getFutureDate(30);
-                    saveAndReload();
+                    saveToCloud();
                     closeBoostModal();
 
-                    // Message chaleureux d'encouragement et vœux de réussite
-                    alert(`🎉 FÉLICITATIONS ${artisan.name.toUpperCase()} !\n\nVotre paiement a été vérifié et votre profil est maintenant activé en TÊTE DE LISTE pour 1 mois !\n\n✨ Nous vous souhaitons plein de succès, beaucoup de visibilité et de décrocher très rapidement de superbes marchés à Bamako ! 🚀`);
+                    alert(`🎉 FÉLICITATIONS ${artisan.name.toUpperCase()} !\n\nVotre paiement a été vérifié et votre profil est activé sur BAARA + pour 1 mois !\n\n✨ Visibilité mise à jour en temps réel pour tous les utilisateurs ! 🚀`);
                 } else {
-                    alert("⚠️ Échec de la vérification : Le numéro (77 97 51 01) ou le montant (800/100 FCFA) n'a pas pu être certifié sur l'image. Veuillez vérifier votre capture d'écran.");
+                    alert("⚠️ Échec de la vérification : Le numéro (77 97 51 01) ou le montant (800/100 FCFA) n'a pas pu être certifié sur l'image.");
                 }
             } catch (err) {
                 console.error(err);
@@ -569,7 +589,7 @@
 
         function reactEmoji(emoji) {
             emojiCounts[emoji]++;
-            saveAndReload();
+            saveToCloud();
         }
 
         function renderEmojis() {
@@ -588,7 +608,7 @@
             });
             document.getElementById('appName').value = '';
             document.getElementById('appComment').value = '';
-            saveAndReload();
+            saveToCloud();
         }
 
         function renderAppReviews() {
@@ -626,14 +646,14 @@
                 });
                 const total = artisan.reviews.reduce((sum, r) => sum + r.rating, 0);
                 artisan.rating = (total / artisan.reviews.length).toFixed(1);
-                saveAndReload();
+                saveToCloud();
                 closeReviewModal();
-                alert("Merci ! Votre évaluation a été enregistrée.");
+                alert("Merci ! Votre évaluation a été enregistrée en ligne.");
             }
         }
 
         function openContactAdmin() {
-            window.open("https://wa.me/22377975101?text=Bonjour%20Administrateur,%20je%20vous%20contacte%20depuis%20l'application%20Allo%20Artisan", "_blank");
+            window.open("https://wa.me/22377975101?text=Bonjour%20Administrateur,%20je%20vous%20contacte%20depuis%20l'application%20Baara%20+", "_blank");
         }
 
         function openAdminLogin() { document.getElementById('adminLoginModal').classList.remove('hidden'); }
@@ -689,25 +709,16 @@
                     cat.img = inputVal;
                 }
             });
-            saveAndReload();
-            renderAdminData();
-            alert("Images des catégories mises à jour et sauvegardées instantanément !");
+            alert("Images des catégories mises à jour localement !");
         }
 
         function deleteArtisan(id) {
             if(confirm("Voulez-vous vraiment supprimer cet artisan ?")) {
                 artisans = artisans.filter(a => a.id !== id);
-                saveAndReload();
+                saveToCloud();
                 renderAdminData();
             }
         }
-
-        checkSubscriptions();
-        populateFilters();
-        renderCategoriesGrid();
-        renderAppReviews();
-        renderEmojis();
-        filterArtisans();
 
         function openRegisterModal() { document.getElementById('registerModal').classList.remove('hidden'); }
         function closeRegisterModal() { document.getElementById('registerModal').classList.add('hidden'); }
