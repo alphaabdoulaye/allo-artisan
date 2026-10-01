@@ -29,7 +29,7 @@
             <div class="flex items-center space-x-2">
                 <button onclick="openBoostModal()" class="bg-amber-400 text-slate-900 text-[11px] font-bold px-2.5 py-1.5 rounded-full shadow flex items-center space-x-1 animate-pulse">
                     <i class="fa-solid fa-bolt"></i>
-                    <span>Booster</span>
+                    <span>Tarifs & Boost</span>
                 </button>
                 <button onclick="openAdminLogin()" class="bg-slate-900 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-full shadow flex items-center space-x-1">
                     <i class="fa-solid fa-lock"></i>
@@ -182,26 +182,44 @@
         </div>
     </div>
 
-    <!-- MODAL : BOOST & PAIEMENT (Wave / Orange Money 77 97 51 01) -->
+    <!-- MODAL : TARIFS, BOOST & PAIEMENT (Wave / Orange Money 77 97 51 01) -->
     <div id="boostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center">
                 <h3 class="font-bold text-base text-slate-900 flex items-center space-x-1 text-amber-600">
-                    <i class="fa-solid fa-bolt"></i><span>Booster mon profil (1 Mois)</span>
+                    <i class="fa-solid fa-bolt"></i><span>Grille Tarifaire & Boost</span>
                 </h3>
                 <button onclick="closeBoostModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <div class="bg-amber-50 p-3 rounded-2xl text-xs space-y-2 border border-amber-200">
-                <p class="font-bold text-amber-800">Tarif : 2 000 FCFA / mois</p>
-                <p class="text-slate-700">Effectuez votre dépôt Wave ou Orange Money au numéro officiel :</p>
-                <div class="bg-white p-2.5 rounded-xl font-mono font-bold text-center text-orange-600 text-base border">
-                    77 97 51 01
+            
+            <!-- Grille Tarifaire Officielle -->
+            <div class="bg-amber-50 p-3.5 rounded-2xl text-xs space-y-2 border border-amber-200">
+                <p class="font-bold text-amber-900 border-b border-amber-200 pb-1">📋 Tarifs Officiels :</p>
+                <ul class="space-y-1.5 text-slate-700">
+                    <li class="flex justify-between items-center">
+                        <span>• Abonnement Mensuel :</span>
+                        <strong class="text-orange-600 text-sm">800 FCFA</strong>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>• Booster de visibilité (5 points / secteur) :</span>
+                        <strong class="text-orange-600 text-sm">100 FCFA</strong>
+                    </li>
+                </ul>
+                <div class="pt-2 border-t border-amber-200">
+                    <p class="text-slate-700">Effectuez votre dépôt Wave ou Orange Money au numéro :</p>
+                    <div class="bg-white p-2 rounded-xl font-mono font-bold text-center text-orange-600 text-sm border mt-1">
+                        77 97 51 01
+                    </div>
                 </div>
-                <p class="text-[11px] text-slate-500">Après le dépôt, remplissez le formulaire ci-dessous pour soumettre votre demande d'activation automatique.</p>
             </div>
+
             <form onsubmit="submitDepositRequest(event)" class="space-y-3">
                 <input type="text" id="depName" placeholder="Nom de l'artisan inscrit" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
                 <input type="text" id="depPhone" placeholder="Votre numéro (celui du dépôt)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <select id="depFormula" class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                    <option value="Abonnement Mensuel (800 FCFA)">Abonnement Mensuel (800 FCFA)</option>
+                    <option value="Booster de visibilité - 5 points / secteur (100 FCFA)">Booster de visibilité - 5 pts/secteur (100 FCFA)</option>
+                </select>
                 <select id="depOperator" class="w-full p-3 bg-slate-100 rounded-xl text-sm">
                     <option value="Orange Money">Orange Money</option>
                     <option value="Wave">Wave</option>
@@ -262,7 +280,7 @@
             </div>
             
             <div class="space-y-4">
-                <!-- Gestion des images des catégories -->
+                <!-- Gestion des images des catégories (Sauvegardé instantanément via localStorage) -->
                 <div>
                     <div class="flex justify-between items-center mb-2">
                         <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wide">Modifier les images des catégories</h4>
@@ -274,7 +292,7 @@
                 <hr>
 
                 <div>
-                    <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wide mb-2">Demandes de Dépôt / Boost en Attente</h4>
+                    <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wide mb-2">Demandes de Paiement / Boost en Attente</h4>
                     <div id="adminDepositsList" class="space-y-2"></div>
                 </div>
 
@@ -340,7 +358,7 @@
             return d.toISOString();
         }
 
-        // Vérifier expiration des abonnements (1 mois)
+        // Vérifier expiration des abonnements
         function checkSubscriptions() {
             const now = new Date();
             let updated = false;
@@ -416,7 +434,7 @@
             filterArtisans();
         }
 
-        // Affichage des artisans
+        // Affichage des artisans (les boostés apparaissent en tête de liste)
         function renderArtisans(data) {
             const list = document.getElementById('artisansList');
             document.getElementById('countBadge').innerText = data.length;
@@ -507,6 +525,7 @@
                 id: Date.now(),
                 name: document.getElementById('depName').value,
                 phone: document.getElementById('depPhone').value,
+                formula: document.getElementById('depFormula').value,
                 operator: document.getElementById('depOperator').value,
                 ref: document.getElementById('depRef').value,
                 date: new Date().toLocaleDateString()
@@ -514,7 +533,7 @@
             deposits.push(deposit);
             saveAndReload();
             closeBoostModal();
-            alert("Demande de boost envoyée ! L'administrateur va vérifier votre dépôt Wave / Orange Money (77 97 51 01) et l'activer.");
+            alert("Demande enregistrée ! L'administrateur va vérifier votre dépôt Wave / Orange Money (77 97 51 01) pour valider votre formule.");
         }
 
         // Emojis
@@ -590,7 +609,7 @@
             window.open("https://wa.me/22377975101?text=Bonjour%20Administrateur,%20je%20vous%20contacte%20depuis%20l'application%20Allo%20Artisan", "_blank");
         }
 
-        // Panneau Admin & Gestion des images
+        // Panneau Admin & Gestion dynamique des images
         function openAdminLogin() { document.getElementById('adminLoginModal').classList.remove('hidden'); }
         function closeAdminLogin() { document.getElementById('adminLoginModal').classList.add('hidden'); }
 
@@ -613,16 +632,19 @@
         function closeAdminPanel() { document.getElementById('adminPanelModal').classList.add('hidden'); }
 
         function renderAdminData() {
-            // Affichage et modification des images des catégories
+            // Affichage et modification en temps réel des images des catégories
             const catList = document.getElementById('adminCategoriesList');
             catList.innerHTML = categories.map((cat, index) => `
                 <div class="bg-slate-50 p-2.5 rounded-xl border text-xs space-y-1">
-                    <span class="font-bold text-slate-800"><i class="fa-solid ${cat.icon} text-orange-500 mr-1"></i>${cat.name}</span>
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-slate-800"><i class="fa-solid ${cat.icon} text-orange-500 mr-1"></i>${cat.name}</span>
+                        <img src="${cat.img}" class="w-8 h-8 rounded object-cover" onerror="this.src=''">
+                    </div>
                     <input type="text" id="catImgInput_${index}" value="${cat.img}" class="w-full p-2 bg-white rounded-lg border text-xs" placeholder="URL de l'image">
                 </div>
             `).join('');
 
-            // Dépôts
+            // Demandes de dépôt
             const depList = document.getElementById('adminDepositsList');
             if(deposits.length === 0) {
                 depList.innerHTML = `<p class="text-xs text-slate-400 italic">Aucune demande de dépôt en attente.</p>`;
@@ -630,9 +652,10 @@
                 depList.innerHTML = deposits.map(d => `
                     <div class="bg-slate-50 p-3 rounded-xl border text-xs space-y-1">
                         <p class="font-bold text-slate-800">${d.name} (${d.operator})</p>
+                        <p class="text-orange-600 font-semibold">Formule : ${d.formula}</p>
                         <p class="text-slate-600">Tél : ${d.phone} | Réf : <span class="font-mono font-bold">${d.ref}</span></p>
                         <button onclick="approveBoost('${d.name}', ${d.id})" class="mt-2 bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-bold text-[11px] shadow">
-                            Valider & Activer Boost (1 mois)
+                            Valider & Activer en tête de liste
                         </button>
                     </div>
                 `).join('');
@@ -652,7 +675,7 @@
             `).join('');
         }
 
-        // Sauvegarder les nouvelles images de catégories depuis le panneau admin
+        // Sauvegarde instantanée des images modifiées dans le localStorage
         function saveCategoryImages() {
             categories.forEach((cat, index) => {
                 const inputVal = document.getElementById(`catImgInput_${index}`).value.trim();
@@ -662,7 +685,7 @@
             });
             saveAndReload();
             renderAdminData();
-            alert("Images des catégories mises à jour avec succès !");
+            alert("Images des catégories mises à jour et sauvegardées instantanément !");
         }
 
         function approveBoost(artisanName, depositId) {
@@ -671,12 +694,12 @@
                 artisan.boosted = true;
                 artisan.boostExpiry = getFutureDate(30);
             } else {
-                alert("Attention : Aucun artisan exact trouvé au nom de '" + artisanName + "'.");
+                alert("Attention : Aucun artisan trouvé au nom exact de '" + artisanName + "'.");
             }
             deposits = deposits.filter(d => d.id !== depositId);
             saveAndReload();
             renderAdminData();
-            alert("Abonnement activé avec succès pour 1 mois !");
+            alert("Formule validée ! L'artisan est désormais en tête de liste.");
         }
 
         function deleteArtisan(id) {
