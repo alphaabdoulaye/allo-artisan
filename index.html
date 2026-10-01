@@ -167,27 +167,19 @@
             </div>
             <form onsubmit="submitArtisan(event)" class="space-y-3">
                 <input type="text" id="regName" placeholder="Prénom et Nom" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
-                <select id="regJob" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
-                    <option value="">Sélectionner un métier</option>
-                    <option value="Plombier">Plombier</option>
-                    <option value="Électricien">Électricien</option>
-                    <option value="Mécanicien">Mécanicien</option>
-                    <option value="Climatisation">Climatisation</option>
-                    <option value="Couturière">Couturière</option>
-                    <option value="Menuisier">Menuisier</option>
-                    <option value="Maçon">Maçon</option>
-                    <option value="Peintre">Peintre</option>
-                    <option value="Soudeur">Soudeur</option>
-                    <option value="Informaticien / Téléphone">Informaticien / Téléphone</option>
-                </select>
+                <input type="text" id="regJob" placeholder="Métier (ex: Plombier, Électricien...)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
                 <input type="text" id="regQuartier" placeholder="Quartier (ex: Torokorobougou, Badalabougou...)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
                 <input type="text" id="regPhone" placeholder="Numéro WhatsApp/Téléphone (+223...)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <div class="space-y-1">
+                    <label class="text-[11px] font-bold text-slate-600">Photo de profil (Facultatif) :</label>
+                    <input type="file" id="regPhotoFile" accept="image/*" class="w-full p-2 bg-slate-100 rounded-xl text-xs file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300">
+                </div>
                 <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-orange-500/30">Valider l'inscription</button>
             </form>
         </div>
     </div>
 
-    <!-- MODAL : TARIFS, BOOST & ACTIVATION AUTOMATIQUE -->
+    <!-- MODAL : TARIFS, BOOST & ACTIVATION AUTOMATIQUE PAR OCR -->
     <div id="boostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center">
@@ -211,16 +203,14 @@
 
             <form onsubmit="verifyScreenshotAndActivate(event)" class="space-y-3">
                 <input type="text" id="autoName" placeholder="Nom de l'artisan inscrit" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
-                
-                <input type="text" id="autoTxId" placeholder="ID de Transaction (Requis / Ex: PP26...)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm font-mono">
 
                 <div class="space-y-1">
-                    <label class="text-[11px] font-bold text-slate-600">Capture d'écran du message de l'opérateur :</label>
+                    <label class="text-[11px] font-bold text-slate-600">Capture d'écran du reçu opérateur :</label>
                     <input type="file" id="screenshotFile" accept="image/*" required class="w-full p-2 bg-slate-100 rounded-xl text-xs file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-orange-500 file:text-white hover:file:bg-orange-600">
                 </div>
 
                 <div id="ocrStatus" class="text-xs text-center text-slate-500 font-medium hidden">
-                    <i class="fa-solid fa-spinner fa-spin mr-1"></i> Analyse de la capture et vérification de l'ID...
+                    <i class="fa-solid fa-spinner fa-spin mr-1"></i> Lecture OCR intelligente & vérification du reçu en cours...
                 </div>
 
                 <button type="submit" id="submitBtn" class="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-emerald-600/30">
@@ -277,23 +267,42 @@
                 <button onclick="closeAdminPanel()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="space-y-4">
-                <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wide">Modifier les images des catégories</h4>
-                        <button onclick="saveCategoryImages()" class="bg-orange-500 hover:bg-orange-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold shadow transition">Enregistrer les images</button>
-                    </div>
-                    <div id="adminCategoriesList" class="space-y-2 max-h-48 overflow-y-auto"></div>
+            <div class="space-y-5">
+                <!-- Section : Ajouter un Métier / Secteur -->
+                <div class="bg-slate-50 p-3 rounded-2xl border space-y-2">
+                    <h4 class="font-bold text-xs text-slate-700 uppercase tracking-wide">Ajouter un nouveau Métier / Secteur</h4>
+                    <form onsubmit="adminAddCategory(event)" class="space-y-2">
+                        <input type="text" id="newCatName" placeholder="Nom du métier (ex: Menuisier Alu)" required class="w-full p-2.5 bg-white rounded-xl border text-xs">
+                        <input type="text" id="newCatImg" placeholder="URL de l'image de couverture" required class="w-full p-2.5 bg-white rounded-xl border text-xs">
+                        <button type="submit" class="w-full bg-orange-600 text-white py-2 rounded-xl text-xs font-bold shadow">Ajouter la catégorie</button>
+                    </form>
+                </div>
+
+                <!-- Section : Ajouter un Artisan / Client -->
+                <div class="bg-slate-50 p-3 rounded-2xl border space-y-2">
+                    <h4 class="font-bold text-xs text-slate-700 uppercase tracking-wide">Ajouter un Artisan / Client</h4>
+                    <form onsubmit="adminAddArtisan(event)" class="space-y-2">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="admArtName" placeholder="Prénom et Nom" required class="w-full p-2.5 bg-white rounded-xl border text-xs">
+                            <input type="text" id="admArtJob" placeholder="Métier" required class="w-full p-2.5 bg-white rounded-xl border text-xs">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="admArtQuartier" placeholder="Quartier" required class="w-full p-2.5 bg-white rounded-xl border text-xs">
+                            <input type="text" id="admArtPhone" placeholder="Téléphone" required class="w-full p-2.5 bg-white rounded-xl border text-xs">
+                        </div>
+                        <button type="submit" class="w-full bg-slate-900 text-white py-2 rounded-xl text-xs font-bold shadow">Ajouter l'artisan</button>
+                    </form>
                 </div>
 
                 <hr>
 
+                <!-- Section : Liste et Suppression -->
                 <div>
                     <div class="flex justify-between items-center mb-2">
-                        <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wide">Gestion des Artisans</h4>
+                        <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wide">Gestion des Artisans enregistrés</h4>
                         <span id="adminTotalArtisans" class="text-xs bg-slate-100 font-bold px-2 py-0.5 rounded-full">0</span>
                     </div>
-                    <div id="adminArtisansList" class="space-y-2 max-h-60 overflow-y-auto"></div>
+                    <div id="adminArtisansList" class="space-y-2 max-h-48 overflow-y-auto"></div>
                 </div>
             </div>
             <button onclick="closeAdminPanel()" class="w-full bg-slate-100 text-slate-700 py-2.5 rounded-xl text-xs font-semibold">Fermer le Panneau</button>
@@ -311,7 +320,7 @@
     </div>
 
     <script>
-        // CONFIGURATION FIREBASE AVEC VOS VRAIES CLÉS
+        // CONFIGURATION FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyC-8nbfa6drXIYJBiAjPY4DCZSi0xKo5Mo",
             authDomain: "baaraplus-7fbbd.firebaseapp.com",
@@ -355,8 +364,8 @@
                 usedTxIds = data.usedTxIds || [];
                 appReviews = data.appReviews || [];
                 emojiCounts = data.emojiCounts || emojiCounts;
+                if (data.categories) categories = data.categories;
             } else {
-                // Données initiales si vide
                 artisans = [
                     { id: 1, name: "Moussa Traoré", job: "Plombier", quartier: "Badalabougou", phone: "+22376123456", rating: "4.9", boosted: true, boostExpiry: getFutureDate(30), img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150", reviews: [] },
                     { id: 2, name: "Oumar Coulibaly", job: "Électricien", quartier: "Kalaban Coro", phone: "+22379876543", rating: "4.8", boosted: true, boostExpiry: getFutureDate(30), img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150", reviews: [] }
@@ -376,7 +385,8 @@
                 artisans: artisans,
                 usedTxIds: usedTxIds,
                 appReviews: appReviews,
-                emojiCounts: emojiCounts
+                emojiCounts: emojiCounts,
+                categories: categories
             });
         }
 
@@ -430,9 +440,9 @@
             grid.innerHTML = categories.map(cat => `
                 <div onclick="filterByCategory('${cat.name}')" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 cursor-pointer hover:shadow-md transition group">
                     <div class="h-24 overflow-hidden relative">
-                        <img src="${cat.img}" alt="${cat.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x200?text=Image'">
+                        <img src="${cat.img}" alt="${cat.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300'">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2.5">
-                            <span class="text-white font-bold text-xs"><i class="fa-solid ${cat.icon} mr-1.5 text-orange-400"></i>${cat.name}</span>
+                            <span class="text-white font-bold text-xs"><i class="fa-solid ${cat.icon || 'fa-briefcase'} mr-1.5 text-orange-400"></i>${cat.name}</span>
                         </div>
                     </div>
                 </div>
@@ -460,7 +470,7 @@
                 <div class="bg-white p-4 rounded-2xl shadow-sm border ${artisan.boosted ? 'border-amber-400 ring-1 ring-amber-400/30' : 'border-slate-100'} flex items-center justify-between">
                     <div class="flex items-center space-x-3">
                         <div class="relative">
-                            <img src="${artisan.img}" alt="${artisan.name}" class="w-14 h-14 rounded-xl object-cover shadow-sm">
+                            <img src="${artisan.img}" alt="${artisan.name}" class="w-14 h-14 rounded-xl object-cover shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'">
                             ${artisan.boosted ? '<span class="absolute -bottom-1 -right-1 bg-amber-400 text-slate-900 text-[9px] font-bold px-1 rounded-full shadow">BOOST</span>' : ''}
                         </div>
                         <div>
@@ -507,38 +517,66 @@
             renderArtisans(filtered);
         }
 
-        function submitArtisan(e) {
+        // Conversion facultative de la photo en Base64
+        function convertImageToBase64(file) {
+            return new Promise((resolve) => {
+                if (!file) {
+                    resolve("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150");
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => resolve("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150");
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function submitArtisan(e) {
             e.preventDefault();
+            const photoFile = document.getElementById('regPhotoFile').files[0];
+            const photoBase64 = await convertImageToBase64(photoFile);
+
+            const jobInput = document.getElementById('regJob').value.trim();
+            // Ajout automatique du métier aux catégories s'il n'existe pas encore
+            if (!categories.some(c => c.name.toLowerCase() === jobInput.toLowerCase())) {
+                categories.push({
+                    name: jobInput,
+                    icon: "fa-briefcase",
+                    img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300"
+                });
+            }
+
             const newArtisan = {
                 id: Date.now(),
-                name: document.getElementById('regName').value,
-                job: document.getElementById('regJob').value,
+                name: document.getElementById('regName').value.trim(),
+                job: jobInput,
                 quartier: document.getElementById('regQuartier').value.trim(),
-                phone: document.getElementById('regPhone').value,
+                phone: document.getElementById('regPhone').value.trim(),
                 rating: "5.0",
                 boosted: false,
                 boostExpiry: null,
-                img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150",
+                img: photoBase64,
                 reviews: []
             };
+
             artisans.unshift(newArtisan);
             saveToCloud();
             closeRegisterModal();
+            document.getElementById('regName').value = '';
+            document.getElementById('regJob').value = '';
+            document.getElementById('regQuartier').value = '';
+            document.getElementById('regPhone').value = '';
+            document.getElementById('regPhotoFile').value = '';
             alert("Inscription réussie ! Votre profil est en ligne et visible partout sur BAARA +.");
         }
 
+        // RECONNAISSANCE AUTOMATIQUE OCR POUR LES ABONNEMENTS ET BOOSTS
         async function verifyScreenshotAndActivate(e) {
             e.preventDefault();
             const artisanName = document.getElementById('autoName').value.trim();
-            const txId = document.getElementById('autoTxId').value.trim().toUpperCase();
             const fileInput = document.getElementById('screenshotFile');
             const statusDiv = document.getElementById('ocrStatus');
             const submitBtn = document.getElementById('submitBtn');
-
-            if (usedTxIds.includes(txId)) {
-                alert("❌ Erreur de sécurité : Cet ID de transaction a déjà été utilisé. Chaque reçu est unique !");
-                return;
-            }
 
             const artisan = artisans.find(a => a.name.toLowerCase() === artisanName.toLowerCase());
             if(!artisan) {
@@ -553,7 +591,7 @@
 
             statusDiv.classList.remove('hidden');
             submitBtn.disabled = true;
-            submitBtn.innerText = "Vérification en cours...";
+            submitBtn.innerText = "Analyse OCR et vérification...";
 
             try {
                 const { data: { text } } = await Tesseract.recognize(
@@ -567,15 +605,34 @@
                 const hasAmount = cleanedText.includes('800') || cleanedText.includes('100');
 
                 if (hasNumber && hasAmount) {
-                    usedTxIds.push(txId);
+                    // Extraction automatique d'une signature unique du reçu (ID de transaction ou empreinte)
+                    let txSignature = "";
+                    const matchTx = text.match(/(?:ID|TRANS|TX|REF|CODE)[\s\:\.\-]*(?:[A-Z0-9]+)/i) || text.match(/[A-Z0-9]{8,}/);
+                    if (matchTx) {
+                        txSignature = matchTx[0].replace(/[^A-Z0-9]/g, '');
+                    } else {
+                        txSignature = cleanedText.substring(0, 35) + "_" + fileInput.files.length;
+                    }
+
+                    if (usedTxIds.includes(txSignature)) {
+                        alert("❌ Erreur de sécurité : Ce reçu a déjà été utilisé. Chaque reçu est unique !");
+                        statusDiv.classList.add('hidden');
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = "Vérifier & Activer Automatiquement";
+                        return;
+                    }
+
+                    usedTxIds.push(txSignature);
                     artisan.boosted = true;
                     artisan.boostExpiry = getFutureDate(30);
                     saveToCloud();
                     closeBoostModal();
+                    document.getElementById('autoName').value = '';
+                    document.getElementById('screenshotFile').value = '';
 
-                    alert(`🎉 FÉLICITATIONS ${artisan.name.toUpperCase()} !\n\nVotre paiement a été vérifié et votre profil est activé sur BAARA + pour 1 mois !\n\n✨ Visibilité mise à jour en temps réel pour tous les utilisateurs ! 🚀`);
+                    alert(`🎉 FÉLICITATIONS ${artisan.name.toUpperCase()} !\n\nReçu validé et reconnu automatiquement par l'IA !\nVotre profil est boosté sur BAARA + pour 1 mois ! 🚀`);
                 } else {
-                    alert("⚠️ Échec de la vérification : Le numéro (77 97 51 01) ou le montant (800/100 FCFA) n'a pas pu être certifié sur l'image.");
+                    alert("⚠️ Échec de la vérification : Le numéro (77 97 51 01) ou le montant requis (800/100 FCFA) n'a pas pu être certifié sur l'image.");
                 }
             } catch (err) {
                 console.error(err);
@@ -678,17 +735,6 @@
         function closeAdminPanel() { document.getElementById('adminPanelModal').classList.add('hidden'); }
 
         function renderAdminData() {
-            const catList = document.getElementById('adminCategoriesList');
-            catList.innerHTML = categories.map((cat, index) => `
-                <div class="bg-slate-50 p-2.5 rounded-xl border text-xs space-y-1">
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-slate-800"><i class="fa-solid ${cat.icon} text-orange-500 mr-1"></i>${cat.name}</span>
-                        <img src="${cat.img}" class="w-8 h-8 rounded object-cover" onerror="this.src=''">
-                    </div>
-                    <input type="text" id="catImgInput_${index}" value="${cat.img}" class="w-full p-2 bg-white rounded-lg border text-xs" placeholder="URL de l'image">
-                </div>
-            `).join('');
-
             document.getElementById('adminTotalArtisans').innerText = artisans.length;
             const artList = document.getElementById('adminArtisansList');
             artList.innerHTML = artisans.map(a => `
@@ -702,18 +748,58 @@
             `).join('');
         }
 
-        function saveCategoryImages() {
-            categories.forEach((cat, index) => {
-                const inputVal = document.getElementById(`catImgInput_${index}`).value.trim();
-                if(inputVal) {
-                    cat.img = inputVal;
-                }
-            });
-            alert("Images des catégories mises à jour localement !");
+        // Fonctions Administrateur pour ajouter des catégories et des artisans
+        function adminAddCategory(e) {
+            e.preventDefault();
+            const name = document.getElementById('newCatName').value.trim();
+            const img = document.getElementById('newCatImg').value.trim();
+            if (!categories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+                categories.push({ name: name, icon: "fa-briefcase", img: img });
+                saveToCloud();
+                document.getElementById('newCatName').value = '';
+                document.getElementById('newCatImg').value = '';
+                alert("Nouvelle catégorie de métier ajoutée avec succès !");
+            } else {
+                alert("Cette catégorie existe déjà.");
+            }
+        }
+
+        function adminAddArtisan(e) {
+            e.preventDefault();
+            const name = document.getElementById('admArtName').value.trim();
+            const job = document.getElementById('admArtJob').value.trim();
+            const quartier = document.getElementById('admArtQuartier').value.trim();
+            const phone = document.getElementById('admArtPhone').value.trim();
+
+            if (!categories.some(c => c.name.toLowerCase() === job.toLowerCase())) {
+                categories.push({ name: job, icon: "fa-briefcase", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300" });
+            }
+
+            const newArtisan = {
+                id: Date.now(),
+                name: name,
+                job: job,
+                quartier: quartier,
+                phone: phone,
+                rating: "5.0",
+                boosted: false,
+                boostExpiry: null,
+                img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150",
+                reviews: []
+            };
+
+            artisans.unshift(newArtisan);
+            saveToCloud();
+            renderAdminData();
+            document.getElementById('admArtName').value = '';
+            document.getElementById('admArtJob').value = '';
+            document.getElementById('admArtQuartier').value = '';
+            document.getElementById('admArtPhone').value = '';
+            alert("Artisan/Client ajouté avec succès par l'administrateur !");
         }
 
         function deleteArtisan(id) {
-            if(confirm("Voulez-vous vraiment supprimer cet artisan ?")) {
+            if(confirm("Voulez-vous vraiment supprimer cet artisan de la base de données ?")) {
                 artisans = artisans.filter(a => a.id !== id);
                 saveToCloud();
                 renderAdminData();
