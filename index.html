@@ -5,150 +5,700 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Allô Artisan - Bamako</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .gradient-header { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen pb-20">
+<body class="bg-slate-50 min-h-screen text-slate-800 pb-24">
 
     <!-- En-tête -->
-    <header class="bg-white shadow-sm sticky top-0 z-50 px-4 py-3 flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-            <div class="bg-orange-500 text-white p-2 rounded-lg font-bold text-sm">🔨</div>
-            <h1 class="text-base font-bold text-slate-800">Allô Artisan <span class="text-xs text-orange-500 font-normal">Bamako</span></h1>
-        </div>
-        <div class="flex items-center space-x-2">
-            <button class="bg-orange-100 text-orange-600 text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-orange-200 transition">🚀 Boost</button>
-            <button class="bg-slate-800 text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-slate-700 transition">🔒 Admin</button>
+    <header class="gradient-header text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="switchTab('home')">
+                <div class="bg-white text-orange-600 p-2 rounded-xl font-bold text-lg shadow">
+                    <i class="fa-solid fa-hammer"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base tracking-wide">Allô Artisan</h1>
+                    <p class="text-[10px] text-orange-100">Bamako • Pro & Vérifié</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="openBoostModal()" class="bg-amber-400 text-slate-900 text-[11px] font-bold px-2.5 py-1.5 rounded-full shadow flex items-center space-x-1 animate-pulse">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Booster</span>
+                </button>
+                <button onclick="openAdminLogin()" class="bg-slate-900 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-full shadow flex items-center space-x-1">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Admin</span>
+                </button>
+            </div>
         </div>
     </header>
 
-    <main class="max-w-md mx-auto p-4 space-y-6">
-        
-        <!-- Grille des Métiers & Secteurs -->
-        <section>
-            <div class="mb-4">
-                <h2 class="text-base font-bold text-slate-800">Grille des Métiers & Secteurs</h2>
-                <p class="text-xs text-slate-500">Sélectionnez une catégorie pour filtrer instantanément les artisans[span_1](start_span)[span_1](end_span).</p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                
-                <!-- Plombier -->
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition cursor-pointer">
-                    <div class="w-12 h-12 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700">Plombier</span>
-                </div>
-
-                <!-- Électricien -->
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition cursor-pointer">
-                    <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700">Électricien</span>
-                </div>
-
-                <!-- Mécanicien -->
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition cursor-pointer">
-                    <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700">Mécanicien</span>
-                </div>
-
-                <!-- Climatisation -->
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition cursor-pointer">
-                    <div class="w-12 h-12 bg-cyan-50 text-cyan-500 rounded-full flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700">Climatisation</span>
-                </div>
-
-                <!-- Menuisier -->
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition cursor-pointer">
-                    <div class="w-12 h-12 bg-yellow-50 text-yellow-600 rounded-full flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700">Menuisier</span>
-                </div>
-
-                <!-- Maçon -->
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition cursor-pointer">
-                    <div class="w-12 h-12 bg-stone-100 text-stone-600 rounded-full flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700">Maçon</span>
-                </div>
-
-                <!-- Peintre -->
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition cursor-pointer">
-                    <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700">Peintre</span>
-                </div>
-
-                <!-- Soudeur -->
-                <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-md transition cursor-pointer">
-                    <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </div>
-                    <span class="text-xs font-bold text-slate-700">Soudeur</span>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Section Tarifs / Booster & Abonnement -->
-        <section class="bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl p-5 text-white shadow-md space-y-4">
-            <div>
-                <h3 class="font-bold text-base mb-1">Tarifs & Visibilité</h3>
-                <p class="text-xs text-orange-100">Optimisez votre position sur Allô Artisan et touchez plus de clients.</p>
-            </div>
-
-            <div class="space-y-3">
-                <!-- Abonnement Mensuel -->
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20 flex justify-between items-center">
-                    <div>
-                        <div class="text-xs font-semibold text-orange-200 uppercase">Abonnement Mensuel</div>
-                        <div class="text-xl font-extrabold">800 FCFA <span class="text-xs font-normal text-orange-100">/ mois</span></div>
-                    </div>
-                    <span class="bg-white text-orange-600 text-xs font-bold px-2.5 py-1 rounded-lg">Standard</span>
-                </div>
-
-                <!-- Booster de Visibilité -->
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/20">
-                    <div class="text-xs font-semibold text-orange-200 uppercase mb-1">Booster de Visibilité</div>
-                    <div class="text-lg font-extrabold mb-1">100 FCFA <span class="text-xs font-normal text-orange-100">/ point / secteur</span></div>
-                    <p class="text-xs text-orange-100 leading-relaxed">Chaque point augmente votre score de visibilité pour vous faire grimper en tête de liste dans votre secteur géographique.</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Barre de navigation inférieure -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-2 px-6 flex justify-between items-center text-xs text-slate-500 z-50">
-        <a href="#" class="flex flex-col items-center text-orange-500 font-semibold">
-            <span class="text-lg">🏠</span>
+    <!-- Navigation bas (onglets) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40 max-w-md mx-auto flex justify-around py-2.5 text-xs font-semibold text-slate-500 shadow-lg">
+        <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-orange-600">
+            <i class="fa-solid fa-house text-base mb-0.5"></i>
             <span>Accueil</span>
-        </a>
-        <a href="#" class="flex flex-col items-center hover:text-orange-500 transition">
-            <span class="text-lg">📂</span>
+        </button>
+        <button onclick="switchTab('categories')" id="nav-categories" class="flex flex-col items-center hover:text-orange-600">
+            <i class="fa-solid fa-grip text-base mb-0.5"></i>
             <span>Catégories</span>
-        </a>
-        <a href="#" class="flex flex-col items-center hover:text-orange-500 transition">
-            <span class="text-lg">➕</span>
-            <span>Add App</span>
-        </a>
-        <a href="#" class="flex flex-col items-center hover:text-orange-500 transition">
-            <span class="text-lg">📞</span>
+        </button>
+        <button onclick="switchTab('reviews')" id="nav-reviews" class="flex flex-col items-center hover:text-orange-600">
+            <i class="fa-solid fa-comments text-base mb-0.5"></i>
+            <span>Avis App</span>
+        </button>
+        <button onclick="openContactAdmin()" class="flex flex-col items-center hover:text-orange-600">
+            <i class="fa-solid fa-headset text-base mb-0.5"></i>
             <span>Contact</span>
-        </a>
+        </button>
     </nav>
 
+    <!-- CONTENU : ACCUEIL -->
+    <main id="tab-home" class="max-w-md mx-auto p-4 space-y-4">
+        <!-- Barre de recherche et filtres -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm space-y-3">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                <input type="text" id="searchInput" placeholder="Métier ou nom (Plombier, Moussa...)" oninput="filterArtisans()"
+                    class="w-full pl-10 pr-4 py-3 bg-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <select id="quartierSelect" onchange="filterArtisans()" class="w-full p-2.5 bg-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <option value="">Tous les quartiers</option>
+                </select>
+                <select id="metierSelect" onchange="filterArtisans()" class="w-full p-2.5 bg-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <option value="">Tous les métiers</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Bannière Inscription / Freemium -->
+        <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-sm flex items-center justify-between">
+            <div>
+                <h3 class="font-bold text-sm">Artisan à Bamako ?</h3>
+                <p class="text-xs text-slate-300">Rejoignez le répertoire et recevez des clients.</p>
+            </div>
+            <button onclick="openRegisterModal()" class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-3 py-2 rounded-xl transition shadow">
+                S'inscrire
+            </button>
+        </div>
+
+        <!-- Liste des professionnels -->
+        <div>
+            <div class="flex justify-between items-center mb-2 px-1">
+                <h2 class="font-bold text-slate-700 text-sm">Professionnels Disponibles</h2>
+                <span id="countBadge" class="text-xs bg-orange-100 text-orange-700 font-bold px-2 py-0.5 rounded-full">0</span>
+            </div>
+            <div id="artisansList" class="space-y-3">
+                <!-- Rempli par JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- CONTENU : CATEGORIES EN GRILLE -->
+    <main id="tab-categories" class="max-w-md mx-auto p-4 space-y-4 hidden">
+        <h2 class="font-bold text-slate-800 text-base">Grille des Métiers & Secteurs</h2>
+        <p class="text-xs text-slate-500">Sélectionnez une catégorie pour filtrer instantanément les artisans.</p>
+        <div id="categoriesGrid" class="grid grid-cols-2 gap-3">
+            <!-- Rempli par JS -->
+        </div>
+    </main>
+
+    <!-- CONTENU : AVIS ET COMMENTAIRES DE L'APPLICATION + REACTIONS EMOJI -->
+    <main id="tab-reviews" class="max-w-md mx-auto p-4 space-y-4 hidden">
+        <!-- Réactions Emojis -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm space-y-2 text-center">
+            <h3 class="font-bold text-sm text-slate-800">Que pensez-vous de l'application ?</h3>
+            <p class="text-xs text-slate-500">Cliquez pour réagir :</p>
+            <div class="flex justify-around pt-2">
+                <button onclick="reactEmoji('👍')" class="flex flex-col items-center bg-slate-50 p-2.5 rounded-xl hover:bg-orange-50 transition w-16">
+                    <span class="text-xl">👍</span>
+                    <span id="count-👍" class="text-xs font-bold text-slate-700 mt-1">0</span>
+                </button>
+                <button onclick="reactEmoji('❤️')" class="flex flex-col items-center bg-slate-50 p-2.5 rounded-xl hover:bg-orange-50 transition w-16">
+                    <span class="text-xl">❤️</span>
+                    <span id="count-❤️" class="text-xs font-bold text-slate-700 mt-1">0</span>
+                </button>
+                <button onclick="reactEmoji('🔥')" class="flex flex-col items-center bg-slate-50 p-2.5 rounded-xl hover:bg-orange-50 transition w-16">
+                    <span class="text-xl">🔥</span>
+                    <span id="count-🔥" class="text-xs font-bold text-slate-700 mt-1">0</span>
+                </button>
+                <button onclick="reactEmoji('👏')" class="flex flex-col items-center bg-slate-50 p-2.5 rounded-xl hover:bg-orange-50 transition w-16">
+                    <span class="text-xl">👏</span>
+                    <span id="count-👏" class="text-xs font-bold text-slate-700 mt-1">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Formulaire Avis App -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm space-y-3">
+            <h3 class="font-bold text-sm text-slate-800">Laissez un commentaire sur l'application</h3>
+            <form onsubmit="submitAppReview(event)" class="space-y-3">
+                <input type="text" id="appName" placeholder="Votre nom" required class="w-full p-2.5 bg-slate-100 rounded-xl text-sm">
+                <textarea id="appComment" placeholder="Votre avis ou suggestion..." rows="2" required class="w-full p-2.5 bg-slate-100 rounded-xl text-sm"></textarea>
+                <button type="submit" class="w-full bg-orange-500 text-white py-2.5 rounded-xl font-bold text-xs shadow">Publier l'avis</button>
+            </form>
+        </div>
+
+        <!-- Liste des avis app -->
+        <div class="space-y-2">
+            <h3 class="font-bold text-slate-700 text-xs">Avis récents des utilisateurs</h3>
+            <div id="appReviewsList" class="space-y-2"></div>
+        </div>
+    </main>
+
+    <!-- MODAL : INSCRIPTION ARTISAN -->
+    <div id="registerModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-lg text-slate-900">Inscription Artisan</h3>
+                <button onclick="closeRegisterModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form onsubmit="submitArtisan(event)" class="space-y-3">
+                <input type="text" id="regName" placeholder="Prénom et Nom" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <select id="regJob" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                    <option value="">Sélectionner un métier</option>
+                    <option value="Plombier">Plombier</option>
+                    <option value="Électricien">Électricien</option>
+                    <option value="Mécanicien">Mécanicien</option>
+                    <option value="Climatisation">Climatisation</option>
+                    <option value="Couturière">Couturière</option>
+                    <option value="Menuisier">Menuisier</option>
+                    <option value="Maçon">Maçon</option>
+                    <option value="Peintre">Peintre</option>
+                    <option value="Soudeur">Soudeur</option>
+                    <option value="Informaticien / Téléphone">Informaticien / Téléphone</option>
+                </select>
+                <input type="text" id="regQuartier" placeholder="Quartier (ex: Torokorobougou, Bamako Coura...)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <input type="text" id="regPhone" placeholder="Numéro WhatsApp/Téléphone (+223...)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-orange-500/30">Valider l'inscription</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL : BOOST & PAIEMENT (Wave / Orange Money 77 97 51 01) -->
+    <div id="boostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-base text-slate-900 flex items-center space-x-1 text-amber-600">
+                    <i class="fa-solid fa-bolt"></i><span>Booster mon profil (1 Mois)</span>
+                </h3>
+                <button onclick="closeBoostModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="bg-amber-50 p-3 rounded-2xl text-xs space-y-2 border border-amber-200">
+                <p class="font-bold text-amber-800">Tarif : 2 000 FCFA / mois</p>
+                <p class="text-slate-700">Effectuez votre dépôt Wave ou Orange Money au numéro officiel :</p>
+                <div class="bg-white p-2.5 rounded-xl font-mono font-bold text-center text-orange-600 text-base border">
+                    77 97 51 01
+                </div>
+                <p class="text-[11px] text-slate-500">Après le dépôt, remplissez le formulaire ci-dessous pour soumettre votre demande d'activation automatique.</p>
+            </div>
+            <form onsubmit="submitDepositRequest(event)" class="space-y-3">
+                <input type="text" id="depName" placeholder="Nom de l'artisan inscrit" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <input type="text" id="depPhone" placeholder="Votre numéro (celui du dépôt)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <select id="depOperator" class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                    <option value="Orange Money">Orange Money</option>
+                    <option value="Wave">Wave</option>
+                </select>
+                <input type="text" id="depRef" placeholder="ID de Transaction / Référence" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <button type="submit" class="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-emerald-600/30">
+                    Confirmer le dépôt & Activer
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL : AVIS CLIENT POUR UN ARTISAN -->
+    <div id="reviewModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-base text-slate-900">Évaluer l'artisan</h3>
+                <button onclick="closeReviewModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p id="reviewArtisanName" class="text-xs text-orange-600 font-bold"></p>
+            <form onsubmit="submitArtisanReview(event)" class="space-y-3">
+                <input type="hidden" id="reviewArtisanId">
+                <input type="text" id="clientName" placeholder="Votre nom" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <select id="clientRating" class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                    <option value="5">⭐⭐⭐⭐⭐ (5/5 Excellent)</option>
+                    <option value="4">⭐⭐⭐⭐ (4/5 Très bien)</option>
+                    <option value="3">⭐⭐⭐ (3/5 Bien)</option>
+                    <option value="2">⭐⭐ (2/5 Moyen)</option>
+                    <option value="1">⭐ (1/5 Mauvais)</option>
+                </select>
+                <textarea id="clientComment" placeholder="Votre commentaire sur le travail effectué..." rows="2" required class="w-full p-3 bg-slate-100 rounded-xl text-sm"></textarea>
+                <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold text-sm shadow">Envoyer l'évaluation</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL : ADMIN LOGIN -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-base text-slate-900"><i class="fa-solid fa-lock text-orange-500 mr-2"></i>Connexion Admin</h3>
+                <button onclick="closeAdminLogin()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p class="text-xs text-slate-500">Entrez le code secret administrateur :</p>
+            <form onsubmit="checkAdminCode(event)" class="space-y-3">
+                <input type="password" id="adminCodeInput" placeholder="Code secret" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <button type="submit" class="w-full bg-slate-900 text-white py-3 rounded-xl font-bold text-sm shadow">Accéder au Panneau</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL : PANNEAU ADMINISTRATEUR -->
+    <div id="adminPanelModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-3xl p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-lg text-slate-900"><i class="fa-solid fa-shield-halved text-orange-600 mr-2"></i>Administration Allô Artisan</h3>
+                <button onclick="closeAdminPanel()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Gestion des images des catégories -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wide">Modifier les images des catégories</h4>
+                        <button onclick="saveCategoryImages()" class="bg-orange-500 hover:bg-orange-600 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold shadow transition">Enregistrer les images</button>
+                    </div>
+                    <div id="adminCategoriesList" class="space-y-2 max-h-48 overflow-y-auto"></div>
+                </div>
+
+                <hr>
+
+                <div>
+                    <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wide mb-2">Demandes de Dépôt / Boost en Attente</h4>
+                    <div id="adminDepositsList" class="space-y-2"></div>
+                </div>
+
+                <hr>
+
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold text-xs text-slate-500 uppercase tracking-wide">Gestion des Artisans</h4>
+                        <span id="adminTotalArtisans" class="text-xs bg-slate-100 font-bold px-2 py-0.5 rounded-full">0</span>
+                    </div>
+                    <div id="adminArtisansList" class="space-y-2 max-h-60 overflow-y-auto"></div>
+                </div>
+            </div>
+            <button onclick="closeAdminPanel()" class="w-full bg-slate-100 text-slate-700 py-2.5 rounded-xl text-xs font-semibold">Fermer le Panneau</button>
+        </div>
+    </div>
+
+    <!-- CONTACT ADMIN FLOTTANT (WhatsApp, Appel, Message) -->
+    <div class="fixed bottom-16 right-4 z-30 flex flex-col space-y-2">
+        <button onclick="openContactAdmin()" class="bg-emerald-600 hover:bg-emerald-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-xl transition transform hover:scale-105">
+            <i class="fa-brands fa-whatsapp"></i>
+        </button>
+        <a href="tel:+22377975101" class="bg-orange-600 hover:bg-orange-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center text-lg transition transform hover:scale-105">
+            <i class="fa-solid fa-phone"></i>
+        </a>
+    </div>
+
+    <script>
+        // Code secret admin requis
+        const SECRET_ADMIN_CODE = "0907aag1993";
+
+        // Charger ou initialiser les catégories avec images (Persistées dans localStorage)
+        let categories = JSON.parse(localStorage.getItem('allo_categories')) || [
+            { name: "Plombier", icon: "fa-faucet-dripping", img: "https://images.unsplash.com/photo-1542013936693-893e3d6e530b?w=300" },
+            { name: "Électricien", icon: "fa-bolt", img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300" },
+            { name: "Mécanicien", icon: "fa-car", img: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=300" },
+            { name: "Climatisation", icon: "fa-snowflake", img: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=300" },
+            { name: "Couturière", icon: "fa-shirt", img: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=300" },
+            { name: "Menuisier", icon: "fa-chair", img: "https://images.unsplash.com/photo-1541888946425-d0fbb18f0c3d?w=300" },
+            { name: "Maçon", icon: "fa-trowel", img: "https://images.unsplash.com/photo-1590069261209-f8e9b8642343?w=300" },
+            { name: "Peintre", icon: "fa-paint-roller", img: "https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=300" },
+            { name: "Soudeur", icon: "fa-fire-flame-curved", img: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=300" },
+            { name: "Informaticien / Téléphone", icon: "fa-laptop", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=300" }
+        ];
+
+        // Charger ou initialiser le LocalStorage pour les artisans
+        let artisans = JSON.parse(localStorage.getItem('allo_artisans')) || [
+            { id: 1, name: "Moussa Traoré", job: "Plombier", quartier: "Badalabougou", phone: "+22376123456", rating: "4.9", boosted: true, boostExpiry: getFutureDate(30), img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150", reviews: [] },
+            { id: 2, name: "Oumar Coulibaly", job: "Électricien", quartier: "Kalaban Coro", phone: "+22379876543", rating: "4.8", boosted: true, boostExpiry: getFutureDate(30), img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150", reviews: [] },
+            { id: 3, name: "Sekou Diallo", job: "Mécanicien", quartier: "ACI 2000", phone: "+22366554433", rating: "4.7", boosted: false, boostExpiry: null, img: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150", reviews: [] },
+            { id: 4, name: "Fatoumata Sidibé", job: "Couturière", quartier: "Hamdallaye", phone: "+22375112233", rating: "5.0", boosted: false, boostExpiry: null, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150", reviews: [] }
+        ];
+
+        let deposits = JSON.parse(localStorage.getItem('allo_deposits')) || [];
+        let appReviews = JSON.parse(localStorage.getItem('allo_app_reviews')) || [
+            { name: "Drissa Koné", comment: "Application super pratique pour trouver un plombier à Bamako !", date: "01/10/2026" }
+        ];
+        let emojiCounts = JSON.parse(localStorage.getItem('allo_emojis')) || { "👍": 14, "❤️": 22, "🔥": 9, "👏": 11 };
+
+        function getFutureDate(days) {
+            const d = new Date();
+            d.setDate(d.getDate() + days);
+            return d.toISOString();
+        }
+
+        // Vérifier expiration des abonnements (1 mois)
+        function checkSubscriptions() {
+            const now = new Date();
+            let updated = false;
+            artisans.forEach(a => {
+                if (a.boosted && a.boostExpiry && new Date(a.boostExpiry) < now) {
+                    a.boosted = false;
+                    a.boostExpiry = null;
+                    updated = true;
+                }
+            });
+            if (updated) saveAndReload();
+        }
+
+        function saveAndReload() {
+            localStorage.setItem('allo_artisans', JSON.stringify(artisans));
+            localStorage.setItem('allo_deposits', JSON.stringify(deposits));
+            localStorage.setItem('allo_app_reviews', JSON.stringify(appReviews));
+            localStorage.setItem('allo_emojis', JSON.stringify(emojiCounts));
+            localStorage.setItem('allo_categories', JSON.stringify(categories));
+            populateFilters();
+            renderCategoriesGrid();
+            renderAppReviews();
+            renderEmojis();
+            filterArtisans();
+        }
+
+        // Navigation onglets
+        function switchTab(tab) {
+            ['home', 'categories', 'reviews'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const navBtn = document.getElementById(`nav-${t}`);
+                if(navBtn) navBtn.classList.remove('text-orange-600');
+            });
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tab}`);
+            if(activeNav) activeNav.classList.add('text-orange-600');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Remplir dynamiquement les listes déroulantes de quartiers et métiers
+        function populateFilters() {
+            const quartiers = [...new Set(artisans.map(a => a.quartier))].sort();
+            const qSelect = document.getElementById('quartierSelect');
+            const currentQ = qSelect.value;
+            qSelect.innerHTML = `<option value="">Tous les quartiers</option>` + quartiers.map(q => `<option value="${q}">${q}</option>`).join('');
+            qSelect.value = currentQ;
+
+            const metiers = [...new Set(artisans.map(a => a.job))].sort();
+            const mSelect = document.getElementById('metierSelect');
+            const currentM = mSelect.value;
+            mSelect.innerHTML = `<option value="">Tous les métiers</option>` + metiers.map(m => `<option value="${m}">${m}</option>`).join('');
+            mSelect.value = currentM;
+        }
+
+        // Grille des catégories avec images
+        function renderCategoriesGrid() {
+            const grid = document.getElementById('categoriesGrid');
+            grid.innerHTML = categories.map(cat => `
+                <div onclick="filterByCategory('${cat.name}')" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 cursor-pointer hover:shadow-md transition group">
+                    <div class="h-24 overflow-hidden relative">
+                        <img src="${cat.img}" alt="${cat.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x200?text=Image'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-2.5">
+                            <span class="text-white font-bold text-xs"><i class="fa-solid ${cat.icon} mr-1.5 text-orange-400"></i>${cat.name}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterByCategory(catName) {
+            switchTab('home');
+            document.getElementById('metierSelect').value = catName;
+            filterArtisans();
+        }
+
+        // Affichage des artisans
+        function renderArtisans(data) {
+            const list = document.getElementById('artisansList');
+            document.getElementById('countBadge').innerText = data.length;
+
+            if (data.length === 0) {
+                list.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 text-sm">Aucun artisan trouvé.</div>`;
+                return;
+            }
+
+            data.sort((a, b) => b.boosted - a.boosted);
+
+            list.innerHTML = data.map(artisan => `
+                <div class="bg-white p-4 rounded-2xl shadow-sm border ${artisan.boosted ? 'border-amber-400 ring-1 ring-amber-400/30' : 'border-slate-100'} flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="${artisan.img}" alt="${artisan.name}" class="w-14 h-14 rounded-xl object-cover shadow-sm">
+                            ${artisan.boosted ? '<span class="absolute -bottom-1 -right-1 bg-amber-400 text-slate-900 text-[9px] font-bold px-1 rounded-full shadow">BOOST</span>' : ''}
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-1">
+                                <h3 class="font-bold text-sm text-slate-900">${artisan.name}</h3>
+                                <i class="fa-solid fa-circle-check text-blue-500 text-xs"></i>
+                            </div>
+                            <p class="text-xs text-orange-600 font-semibold">${artisan.job}</p>
+                            <div class="flex items-center space-x-2 mt-1 text-[11px] text-slate-500">
+                                <span><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>${artisan.quartier}</span>
+                                <span>•</span>
+                                <span class="text-amber-500 font-bold cursor-pointer hover:underline" onclick="openReviewModal(${artisan.id})">
+                                    <i class="fa-solid fa-star mr-0.5"></i>${artisan.rating} (${artisan.reviews ? artisan.reviews.length : 0})
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <a href="https://wa.me/${artisan.phone.replace(/[^0-9]/g, '')}?text=Bonjour%20${artisan.name},%20je%20vous%20contacte%20via%20Allo%20Artisan" target="_blank" 
+                           class="w-10 h-10 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl flex items-center justify-center shadow-md transition">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                        </a>
+                        <a href="tel:${artisan.phone}" 
+                           class="w-10 h-10 bg-orange-500 hover:bg-orange-600 text-white rounded-xl flex items-center justify-center shadow-md transition">
+                            <i class="fa-solid fa-phone text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterArtisans() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const quartier = document.getElementById('quartierSelect').value;
+            const metier = document.getElementById('metierSelect').value;
+
+            const filtered = artisans.filter(a => {
+                const matchQuery = a.name.toLowerCase().includes(query) || a.job.toLowerCase().includes(query);
+                const matchQuartier = quartier === "" || a.quartier === quartier;
+                const matchMetier = metier === "" || a.job === metier;
+                return matchQuery && matchQuartier && matchMetier;
+            });
+
+            renderArtisans(filtered);
+        }
+
+        // Inscription Artisan
+        function submitArtisan(e) {
+            e.preventDefault();
+            const newArtisan = {
+                id: Date.now(),
+                name: document.getElementById('regName').value,
+                job: document.getElementById('regJob').value,
+                quartier: document.getElementById('regQuartier').value.trim(),
+                phone: document.getElementById('regPhone').value,
+                rating: "5.0",
+                boosted: false,
+                boostExpiry: null,
+                img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150",
+                reviews: []
+            };
+            artisans.unshift(newArtisan);
+            saveAndReload();
+            closeRegisterModal();
+            alert("Inscription réussie ! Votre profil est en ligne.");
+        }
+
+        // Soumission Dépôt Wave / Orange Money
+        function submitDepositRequest(e) {
+            e.preventDefault();
+            const deposit = {
+                id: Date.now(),
+                name: document.getElementById('depName').value,
+                phone: document.getElementById('depPhone').value,
+                operator: document.getElementById('depOperator').value,
+                ref: document.getElementById('depRef').value,
+                date: new Date().toLocaleDateString()
+            };
+            deposits.push(deposit);
+            saveAndReload();
+            closeBoostModal();
+            alert("Demande de boost envoyée ! L'administrateur va vérifier votre dépôt Wave / Orange Money (77 97 51 01) et l'activer.");
+        }
+
+        // Emojis
+        function reactEmoji(emoji) {
+            emojiCounts[emoji]++;
+            saveAndReload();
+        }
+
+        function renderEmojis() {
+            for (let emoji in emojiCounts) {
+                const el = document.getElementById(`count-${emoji}`);
+                if(el) el.innerText = emojiCounts[emoji];
+            }
+        }
+
+        // Avis application
+        function submitAppReview(e) {
+            e.preventDefault();
+            appReviews.unshift({
+                name: document.getElementById('appName').value,
+                comment: document.getElementById('appComment').value,
+                date: new Date().toLocaleDateString()
+            });
+            document.getElementById('appName').value = '';
+            document.getElementById('appComment').value = '';
+            saveAndReload();
+        }
+
+        function renderAppReviews() {
+            const list = document.getElementById('appReviewsList');
+            list.innerHTML = appReviews.map(r => `
+                <div class="bg-white p-3 rounded-xl shadow-sm text-xs border border-slate-100 space-y-1">
+                    <div class="flex justify-between font-bold text-slate-800">
+                        <span>${r.name}</span>
+                        <span class="text-[10px] text-slate-400 font-normal">${r.date}</span>
+                    </div>
+                    <p class="text-slate-600">${r.comment}</p>
+                </div>
+            `).join('');
+        }
+
+        // Évaluation artisan
+        function openReviewModal(artisanId) {
+            const artisan = artisans.find(a => a.id === artisanId);
+            if(!artisan) return;
+            document.getElementById('reviewArtisanName').innerText = artisan.name + " (" + artisan.job + ")";
+            document.getElementById('reviewArtisanId').value = artisan.id;
+            document.getElementById('reviewModal').classList.remove('hidden');
+        }
+        function closeReviewModal() { document.getElementById('reviewModal').classList.add('hidden'); }
+
+        function submitArtisanReview(e) {
+            e.preventDefault();
+            const artisanId = Number(document.getElementById('reviewArtisanId').value);
+            const artisan = artisans.find(a => a.id === artisanId);
+            if(artisan) {
+                if(!artisan.reviews) artisan.reviews = [];
+                artisan.reviews.push({
+                    client: document.getElementById('clientName').value,
+                    rating: Number(document.getElementById('clientRating').value),
+                    comment: document.getElementById('clientComment').value
+                });
+                const total = artisan.reviews.reduce((sum, r) => sum + r.rating, 0);
+                artisan.rating = (total / artisan.reviews.length).toFixed(1);
+                saveAndReload();
+                closeReviewModal();
+                alert("Merci ! Votre évaluation a été enregistrée.");
+            }
+        }
+
+        // Contact Admin
+        function openContactAdmin() {
+            window.open("https://wa.me/22377975101?text=Bonjour%20Administrateur,%20je%20vous%20contacte%20depuis%20l'application%20Allo%20Artisan", "_blank");
+        }
+
+        // Panneau Admin & Gestion des images
+        function openAdminLogin() { document.getElementById('adminLoginModal').classList.remove('hidden'); }
+        function closeAdminLogin() { document.getElementById('adminLoginModal').classList.add('hidden'); }
+
+        function checkAdminCode(e) {
+            e.preventDefault();
+            const code = document.getElementById('adminCodeInput').value;
+            if(code === SECRET_ADMIN_CODE) {
+                closeAdminLogin();
+                document.getElementById('adminCodeInput').value = '';
+                openAdminPanel();
+            } else {
+                alert("Code secret administrateur incorrect !");
+            }
+        }
+
+        function openAdminPanel() {
+            renderAdminData();
+            document.getElementById('adminPanelModal').classList.remove('hidden');
+        }
+        function closeAdminPanel() { document.getElementById('adminPanelModal').classList.add('hidden'); }
+
+        function renderAdminData() {
+            // Affichage et modification des images des catégories
+            const catList = document.getElementById('adminCategoriesList');
+            catList.innerHTML = categories.map((cat, index) => `
+                <div class="bg-slate-50 p-2.5 rounded-xl border text-xs space-y-1">
+                    <span class="font-bold text-slate-800"><i class="fa-solid ${cat.icon} text-orange-500 mr-1"></i>${cat.name}</span>
+                    <input type="text" id="catImgInput_${index}" value="${cat.img}" class="w-full p-2 bg-white rounded-lg border text-xs" placeholder="URL de l'image">
+                </div>
+            `).join('');
+
+            // Dépôts
+            const depList = document.getElementById('adminDepositsList');
+            if(deposits.length === 0) {
+                depList.innerHTML = `<p class="text-xs text-slate-400 italic">Aucune demande de dépôt en attente.</p>`;
+            } else {
+                depList.innerHTML = deposits.map(d => `
+                    <div class="bg-slate-50 p-3 rounded-xl border text-xs space-y-1">
+                        <p class="font-bold text-slate-800">${d.name} (${d.operator})</p>
+                        <p class="text-slate-600">Tél : ${d.phone} | Réf : <span class="font-mono font-bold">${d.ref}</span></p>
+                        <button onclick="approveBoost('${d.name}', ${d.id})" class="mt-2 bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-bold text-[11px] shadow">
+                            Valider & Activer Boost (1 mois)
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            // Artisans
+            document.getElementById('adminTotalArtisans').innerText = artisans.length;
+            const artList = document.getElementById('adminArtisansList');
+            artList.innerHTML = artisans.map(a => `
+                <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded-xl border text-xs">
+                    <div>
+                        <span class="font-bold text-slate-800">${a.name}</span> (${a.job} - ${a.quartier})
+                        ${a.boosted ? '<span class="text-amber-600 font-bold ml-1">[Boosté]</span>' : ''}
+                    </div>
+                    <button onclick="deleteArtisan(${a.id})" class="bg-red-500 text-white px-2.5 py-1 rounded-lg font-bold">Supprimer</button>
+                </div>
+            `).join('');
+        }
+
+        // Sauvegarder les nouvelles images de catégories depuis le panneau admin
+        function saveCategoryImages() {
+            categories.forEach((cat, index) => {
+                const inputVal = document.getElementById(`catImgInput_${index}`).value.trim();
+                if(inputVal) {
+                    cat.img = inputVal;
+                }
+            });
+            saveAndReload();
+            renderAdminData();
+            alert("Images des catégories mises à jour avec succès !");
+        }
+
+        function approveBoost(artisanName, depositId) {
+            const artisan = artisans.find(a => a.name.toLowerCase() === artisanName.toLowerCase());
+            if(artisan) {
+                artisan.boosted = true;
+                artisan.boostExpiry = getFutureDate(30);
+            } else {
+                alert("Attention : Aucun artisan exact trouvé au nom de '" + artisanName + "'.");
+            }
+            deposits = deposits.filter(d => d.id !== depositId);
+            saveAndReload();
+            renderAdminData();
+            alert("Abonnement activé avec succès pour 1 mois !");
+        }
+
+        function deleteArtisan(id) {
+            if(confirm("Voulez-vous vraiment supprimer cet artisan ?")) {
+                artisans = artisans.filter(a => a.id !== id);
+                saveAndReload();
+                renderAdminData();
+            }
+        }
+
+        // Initialisation globale
+        checkSubscriptions();
+        populateFilters();
+        renderCategoriesGrid();
+        renderAppReviews();
+        renderEmojis();
+        filterArtisans();
+
+        function openRegisterModal() { document.getElementById('registerModal').classList.remove('hidden'); }
+        function closeRegisterModal() { document.getElementById('registerModal').classList.add('hidden'); }
+        function openBoostModal() { document.getElementById('boostModal').classList.remove('hidden'); }
+        function closeBoostModal() { document.getElementById('boostModal').classList.add('hidden'); }
+    </script>
 </body>
 </html>
