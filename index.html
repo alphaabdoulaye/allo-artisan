@@ -3,178 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All� Artisan - Bamako</title>
-    <!-- Chargement de Tailwind CSS -->
+    <title>Allô Artisan - Bamako</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .gradient-header { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans pb-12">
+<body class="bg-slate-50 min-h-screen text-slate-800">
 
-    <!-- Magnifique En-t�te (Header avec banni�re stylis�e) -->
-    <header class="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 text-white shadow-lg pb-6 pt-6 px-4 rounded-b-3xl">
-        <div class="max-w-md mx-auto">
-            <div class="flex justify-between items-center mb-3">
-                <span class="bg-orange-700/60 text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm border border-orange-400/30">
-                     Bamako 
-                </span>
-                <span class="text-xs bg-white/20 px-2.5 py-1 rounded-full font-semibold">Service Pro</span>
-            </div>
-            <div class="flex items-center space-x-3">
-                <div class="bg-white text-orange-600 p-3 rounded-2xl shadow-md text-2xl font-black">
-                    
+    <!-- En-tête -->
+    <header class="gradient-header text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="bg-white text-orange-600 p-2 rounded-xl font-bold text-xl shadow">
+                    <i class="fa-solid fa-hammer"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-extrabold tracking-tight">All� Artisan</h1>
-                    <p class="text-orange-100 text-xs font-medium">Trouvez le bon professionnel pr�s de chez vous</p>
+                    <h1 class="font-bold text-xl tracking-wide">Allô Artisan</h1>
+                    <p class="text-xs text-orange-100">Bamako • Pro & Vérifié</p>
                 </div>
             </div>
+            <button onclick="openBoostModal()" class="bg-amber-400 text-slate-900 text-xs font-bold px-3 py-2 rounded-full shadow flex items-center space-x-1 animate-pulse">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Booster mon profil</span>
+            </button>
         </div>
     </header>
 
     <!-- Contenu Principal -->
-    <main class="max-w-md mx-auto p-4 -mt-3">
-        
-        <!-- Bloc de Recherche et Filtres -->
-        <div class="bg-white p-4 rounded-2xl shadow-md border border-slate-100 mb-5 space-y-3">
-            <div>
-                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Rechercher un service</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"></span>
-                    <input type="text" id="searchInput" placeholder="Ex: Plombier, �lectricien, Moto..." 
-                        class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white text-sm transition">
-                </div>
-            </div>
+    <main class="max-w-md mx-auto p-4 space-y-4 pb-20">
 
-            <div>
-                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Quartier</label>
-                <select id="quartierFilter" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white text-sm transition font-medium">
-                    <option value="">Tous les quartiers de Bamako</option>
+        <!-- Barre de recherche et filtres -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm space-y-3">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                <input type="text" id="searchInput" placeholder="Métier (Plombier, Électricien...)" oninput="filterArtisans()"
+                    class="w-full pl-10 pr-4 py-3 bg-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <select id="quartierSelect" onchange="filterArtisans()" class="w-full p-2.5 bg-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <option value="">Tous les quartiers</option>
+                    <option value="ACI 2000">ACI 2000</option>
                     <option value="Badalabougou">Badalabougou</option>
                     <option value="Kalaban Coro">Kalaban Coro</option>
-                    <option value="ACI 2000">ACI 2000</option>
                     <option value="Hamdallaye">Hamdallaye</option>
-                    <option value="Sotuba">Sotuba</option>
+                    <option value="Hippodrome">Hippodrome</option>
+                    <option value="Faladié">Faladié</option>
+                </select>
+                <select id="metierSelect" onchange="filterArtisans()" class="w-full p-2.5 bg-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <option value="">Tous les métiers</option>
+                    <option value="Plombier">Plombier</option>
+                    <option value="Électricien">Électricien</option>
+                    <option value="Mécanicien">Mécanicien</option>
+                    <option value="Climatisation">Climatisation</option>
+                    <option value="Couturière">Couturière</option>
                 </select>
             </div>
         </div>
 
-        <!-- Titre de section -->
-        <div class="flex justify-between items-center mb-3 px-1">
-            <h2 class="text-sm font-bold text-slate-600 uppercase tracking-wider">Professionnels disponibles</h2>
-            <span id="countBadge" class="text-xs bg-orange-100 text-orange-700 font-bold px-2.5 py-0.5 rounded-full">0</span>
+        <!-- Bannière Freemium / Info -->
+        <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-sm flex items-center justify-between">
+            <div>
+                <h3 class="font-bold text-sm">Artisan à Bamako ?</h3>
+                <p class="text-xs text-slate-300">Recevez des clients directement sur WhatsApp.</p>
+            </div>
+            <button onclick="openRegisterModal()" class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-3 py-2 rounded-xl transition">
+                S'inscrire
+            </button>
         </div>
 
-        <!-- Liste des Artisans -->
-        <div id="artisanList" class="space-y-3.5">
-            <!-- Inject� dynamiquement par JavaScript -->
+        <!-- Liste des professionnels -->
+        <div>
+            <div class="flex justify-between items-center mb-2 px-1">
+                <h2 class="font-bold text-slate-700 text-sm">Professionnels Disponibles</h2>
+                <span id="countBadge" class="text-xs bg-orange-100 text-orange-700 font-bold px-2 py-0.5 rounded-full">6</span>
+            </div>
+            <div id="artisansList" class="space-y-3">
+                <!-- Rempli par JavaScript -->
+            </div>
         </div>
-
     </main>
 
-    <!-- Script de gestion -->
+    <!-- Modal d'inscription Artisan -->
+    <div id="registerModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-lg text-slate-900">Rejoindre Allô Artisan</h3>
+                <button onclick="closeRegisterModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p class="text-xs text-slate-500">Remplissez ce formulaire pour figurer dans l'application.</p>
+            <form onsubmit="submitArtisan(event)" class="space-y-3">
+                <input type="text" id="regName" placeholder="Prénom et Nom" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <input type="text" id="regJob" placeholder="Métier (ex: Plombier, Électricien)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <input type="text" id="regQuartier" placeholder="Quartier à Bamako (ex: ACI 2000)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <input type="text" id="regPhone" placeholder="Numéro WhatsApp (+223...)" required class="w-full p-3 bg-slate-100 rounded-xl text-sm">
+                <button type="submit" class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-orange-500/30">Valider mon inscription</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Boost -->
+    <div id="boostModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 space-y-4 shadow-2xl text-center">
+            <div class="w-12 h-12 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <h3 class="font-bold text-lg text-slate-900">Passer en Compte Boosté</h3>
+            <p class="text-xs text-slate-600">Apparaissez en haut de liste et multipliez par 5 vos appels clients à Bamako pour seulement <strong>2 000 FCFA / semaine</strong>.</p>
+            <div class="bg-slate-50 p-3 rounded-xl text-left text-xs space-y-2 border">
+                <div class="flex items-center space-x-2 text-slate-700"><i class="fa-solid fa-check text-green-500"></i><span>Badge "Vérifié & Sponsorisé"</span></div>
+                <div class="flex items-center space-x-2 text-slate-700"><i class="fa-solid fa-check text-green-500"></i><span>Priorité dans les recherches</span></div>
+                <div class="flex items-center space-x-2 text-slate-700"><i class="fa-solid fa-check text-green-500"></i><span>Paiement par Orange Money / Moov Money</span></div>
+            </div>
+            <a href="https://wa.me/22370000000?text=Bonjour,%20je%20souhaite%20booster%20mon%20profil%20sur%20Allo%20Artisan" target="_blank"
+               class="block w-full bg-emerald-600 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-emerald-600/30">
+               Contacter le support (WhatsApp)
+            </a>
+            <button onclick="closeBoostModal()" class="w-full bg-slate-100 text-slate-600 py-2.5 rounded-xl text-xs font-semibold">Fermer</button>
+        </div>
+    </div>
+
     <script>
-        const artisans = [
-            {
-                nom: "Moussa Traor�",
-                metier: "Plombier",
-                quartier: "Badalabougou",
-                note: "4.8",
-                tel: "+22370000001",
-                photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
-            },
-            {
-                nom: "Oumar Coulibaly",
-                metier: "�lectricien",
-                quartier: "Kalaban Coro",
-                note: "4.9",
-                tel: "+22371111102",
-                photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150"
-            },
-            {
-                nom: "Sekou Diallo",
-                metier: "Moto-Taxi / Livreur",
-                quartier: "ACI 2000",
-                note: "4.7",
-                tel: "+22372222203",
-                photo: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150"
-            },
-            {
-                nom: "Fatoumata Sidib�",
-                metier: "Couturi�re / Tailleur",
-                quartier: "Hamdallaye",
-                note: "5.0",
-                tel: "+22373333304",
-                photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
-            }
+        // Liste initiale de vrais profils d'exemple à Bamako
+        let artisans = [
+            { id: 1, name: "Moussa Traoré", job: "Plombier", quartier: "Badalabougou", phone: "+22376123456", rating: "4.9", boosted: true, img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" },
+            { id: 2, name: "Oumar Coulibaly", job: "Électricien", quartier: "Kalaban Coro", phone: "+22379876543", rating: "4.8", boosted: true, img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150" },
+            { id: 3, name: "Sekou Diallo", job: "Mécanicien", quartier: "ACI 2000", phone: "+22366554433", rating: "4.7", boosted: false, img: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=150" },
+            { id: 4, name: "Fatoumata Sidibé", job: "Couturière", quartier: "Hamdallaye", phone: "+22375112233", rating: "5.0", boosted: false, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" },
+            { id: 5, name: "Ibrahim Maïga", job: "Climatisation", quartier: "Hippodrome", phone: "+22374332211", rating: "4.6", boosted: false, img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150" },
+            { id: 6, name: "Aminata Traoré", job: "Couturière", quartier: "Faladié", phone: "+22378998877", rating: "4.9", boosted: false, img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150" }
         ];
 
-        const artisanList = document.getElementById('artisanList');
-        const searchInput = document.getElementById('searchInput');
-        const quartierFilter = document.getElementById('quartierFilter');
-        const countBadge = document.getElementById('countBadge');
-
-        function displayArtisans(data) {
-            artisanList.innerHTML = '';
-            countBadge.textContent = data.length;
-
-            if (data.length === 0) {
-                artisanList.innerHTML = `
-                    <div class="bg-white p-8 rounded-2xl text-center border border-slate-100 shadow-sm">
-                        <p class="text-3xl mb-2"></p>
-                        <p class="text-slate-600 font-semibold text-sm">Aucun artisan trouv�</p>
-                        <p class="text-slate-400 text-xs mt-1">Essayez un autre mot-cl� ou quartier.</p>
-                    </div>`;
+        function renderArtisans(data) {
+            const list = document.getElementById('artisansList');
+            document.getElementById('countBadge').innerText = data.length;
+            
+            if(data.length === 0) {
+                list.innerHTML = `<div class="bg-white p-8 rounded-2xl text-center text-slate-400 text-sm">Aucun artisan trouvé pour cette recherche.</div>`;
                 return;
             }
 
-            data.forEach(artisan => {
-                const card = document.createElement('div');
-                card.className = "bg-white p-4 rounded-2xl shadow-sm flex items-center justify-between border border-slate-100 hover:shadow-md transition";
-                
-                card.innerHTML = `
-                    <div class="flex items-center space-x-3.5">
-                        <img src="${artisan.photo}" alt="${artisan.nom}" class="w-15 h-15 w-16 h-16 rounded-2xl object-cover shadow-sm border-2 border-orange-500">
+            // Trier pour mettre les boostés en haut
+            data.sort((a, b) => b.boosted - a.boosted);
+
+            list.innerHTML = data.map(artisan => `
+                <div class="bg-white p-4 rounded-2xl shadow-sm border ${artisan.boosted ? 'border-amber-400 ring-1 ring-amber-400/30' : 'border-slate-100'} flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <img src="${artisan.img}" alt="${artisan.name}" class="w-14 h-14 rounded-xl object-cover shadow-sm">
+                            ${artisan.boosted ? '<span class="absolute -bottom-1 -right-1 bg-amber-400 text-slate-900 text-[10px] font-bold px-1 rounded-full shadow">BOOST</span>' : ''}
+                        </div>
                         <div>
-                            <h3 class="font-bold text-base text-slate-900">${artisan.nom}</h3>
-                            <p class="text-xs text-orange-600 font-bold uppercase tracking-wide mt-0.5">${artisan.metier}</p>
-                            <p class="text-xs text-slate-400 mt-1 flex items-center">
-                                <span class="mr-1"></span> ${artisan.quartier}
-                            </p>
-                            <div class="flex items-center text-xs text-amber-500 font-bold mt-1">
-                                <span class="mr-1"></span><span>${artisan.note}</span>
+                            <div class="flex items-center space-x-1">
+                                <h3 class="font-bold text-sm text-slate-900">${artisan.name}</h3>
+                                <i class="fa-solid fa-circle-check text-blue-500 text-xs"></i>
+                            </div>
+                            <p class="text-xs text-orange-600 font-semibold">${artisan.job}</p>
+                            <div class="flex items-center space-x-2 mt-1 text-[11px] text-slate-500">
+                                <span><i class="fa-solid fa-location-dot text-slate-400 mr-1"></i>${artisan.quartier}</span>
+                                <span>•</span>
+                                <span class="text-amber-500 font-bold"><i class="fa-solid fa-star mr-0.5"></i>${artisan.rating}</span>
                             </div>
                         </div>
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <a href="tel:${artisan.tel}" class="bg-emerald-600 text-white w-11 h-11 rounded-xl flex items-center justify-center shadow-md hover:bg-emerald-700 transition text-lg" title="Appeler">
-                            
+                        <a href="https://wa.me/${artisan.phone.replace(/[^0-9]/g, '')}?text=Bonjour%20${artisan.name},%20je%20vous%20contacte%20via%20Allo%20Artisan" target="_blank" 
+                           class="w-10 h-10 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl flex items-center justify-center shadow-md shadow-emerald-500/20 transition">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
                         </a>
-                        <a href="https://wa.me/${artisan.tel}?text=Bonjour%20${artisan.nom},%20je%20vous%20contacte%20via%20All�%20Artisan." target="_blank" class="bg-green-500 text-white w-11 h-11 rounded-xl flex items-center justify-center shadow-md hover:bg-green-600 transition text-lg" title="WhatsApp">
-                            
+                        <a href="tel:${artisan.phone}" 
+                           class="w-10 h-10 bg-orange-500 hover:bg-orange-600 text-white rounded-xl flex items-center justify-center shadow-md shadow-orange-500/20 transition">
+                            <i class="fa-solid fa-phone text-sm"></i>
                         </a>
                     </div>
-                `;
-                artisanList.appendChild(card);
-            });
+                </div>
+            `).join('');
         }
 
         function filterArtisans() {
-            const searchVal = searchInput.value.toLowerCase();
-            const quartierVal = quartierFilter.value;
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const quartier = document.getElementById('quartierSelect').value;
+            const metier = document.getElementById('metierSelect').value;
 
             const filtered = artisans.filter(a => {
-                const matchSearch = a.nom.toLowerCase().includes(searchVal) || a.metier.toLowerCase().includes(searchVal);
-                const matchQuartier = quartierVal === "" || a.quartier === quartierVal;
-                return matchSearch && matchQuartier;
+                const matchQuery = a.name.toLowerCase().includes(query) || a.job.toLowerCase().includes(query);
+                const matchQuartier = quartier === "" || a.quartier === quartier;
+                const matchMetier = metier === "" || a.job === metier;
+                return matchQuery && matchQuartier && matchMetier;
             });
 
-            displayArtisans(filtered);
+            renderArtisans(filtered);
         }
 
-        searchInput.getElementById ? null : searchInput.addEventListener('input', filterArtisans);
-        searchInput.addEventListener('input', filterArtisans);
-        quartierFilter.addEventListener('change', filterArtisans);
+        function openRegisterModal() { document.getElementById('registerModal').classList.remove('hidden'); }
+        function closeRegisterModal() { document.getElementById('registerModal').classList.add('hidden'); }
+        function openBoostModal() { document.getElementById('boostModal').classList.remove('hidden'); }
+        function closeBoostModal() { document.getElementById('boostModal').classList.add('hidden'); }
 
-        displayArtisans(artisans);
+        function submitArtisan(e) {
+            e.preventDefault();
+            const newArtisan = {
+                id: artisans.length + 1,
+                name: document.getElementById('regName').value,
+                job: document.getElementById('regJob').value,
+                quartier: document.getElementById('regQuartier').value,
+                phone: document.getElementById('regPhone').value,
+                rating: "5.0",
+                boosted: false,
+                img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150"
+            };
+            artisans.unshift(newArtisan);
+            renderArtisans(artisans);
+            closeRegisterModal();
+            alert("Inscription réussie ! Votre profil est maintenant en ligne.");
+        }
+
+        // Initialisation
+        renderArtisans(artisans);
     </script>
 </body>
 </html>
+```eof
+
+---
+
+### Prochaines étapes suggérées :
+1. **Mettre à jour GitHub :** Remplacez le code de votre fichier `index.html` actuel sur GitHub par ce nouveau code complet (allez sur GitHub dans `index.html`, cliquez sur l'icône de crayon pour éditer, effacez tout, collez ce code, et validez en bas).
+2. **Transformer en APK Android :** Une fois le site en ligne, vous pourrez coller votre lien GitHub (`[https://alphaabdoulaye.github.io/allo-artisan/](https://alphaabdoulaye.github.io/allo-artisan/)`) sur un outil gratuit en ligne comme **PWABuilder** ou **WebIntoApp** pour générer un fichier `.apk` installable directement sur les téléphones à Bamako !
